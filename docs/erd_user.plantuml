@@ -1,0 +1,45 @@
+@startuml erd_user
+' ERD для сущностей, связанных с пользователями
+
+entity User {
+  *id: integer
+  ..
+  *name: string
+  *email: string
+  *role: string
+  *password: string
+  verified: datetime
+  avatar_url: string
+  *created_at: datetime
+  updated_at: datetime
+}
+
+entity Verification {
+  *id: integer
+  ..
+  *code: string
+  *created_at: datetime
+  *user_id: integer
+}
+
+entity OAuth {
+  *id: integer
+  ..
+  *provider: string
+  *provider_id: string
+  *user_id: integer
+}
+
+entity QRLogin {
+  *id: integer
+  ..
+  *secret: string
+  *created_at: datetime
+  *user_id
+}
+
+
+User ||--o{ Verification : "has"
+User ||--o{ OAuth : "has"
+User ||--o{ QRLogin : "has"
+@enduml

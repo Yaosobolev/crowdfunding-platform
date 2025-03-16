@@ -2,46 +2,68 @@
 ' ERD для сущностей, связанных с проектами
 
 entity Project {
-  id: integer
-  title: string
-  description: text
-  goal_amount: decimal
-  current_amount: decimal
-  status: string
-  created_at: datetime
+  *id: integer
+  ..
+  *title: string
+  *description: string
+  *goal_amount: integer
+  *current_amount: integer
+  *created_at: datetime
   updated_at: datetime
-  user_id: integer
+  *user_id: integer
+  *category_id: integer
 }
 
-entity Comment {
-  id: integer
-  content: text
-  created_at: datetime
-  user_id: integer
-  project_id: integer
+entity Category {
+  *id: integer
+  ..
+  *name:string
+}
+
+entity Campaign {
+  *id: integer
+  ..
+  *description: string
+  *created_at: datetime
+  updated_at: datetime
+  *project_id: integer
 }
 
 entity News {
-  id: integer
-  title: string
-  content: text
-  created_at: datetime
-  project_id: integer
+  *id: integer
+  ..
+  *title: string
+  *content: text
+  *created_at: datetime
+  updated_at: datetime
+  *user_id: integer
+  *project_id: integer
+  *score_id: integer
 }
 
-entity Rating {
-  id: integer
-  value: integer
-  created_at: datetime
-  user_id: integer
-  comment_id: integer
-  news_id: integer
+entity Comment {
+  *id: integer
+  ..
+  *content: text
+  *created_at: datetime
+  updated_at: datetime
+  *user_id: integer
+  *project_id: integer
 }
 
-' Связи
+entity Score {
+  *id: integer
+  ..
+  *is_liked: boolean
+  *created_at: datetime
+  updated_at: datetime
+  *user_id: integer
+  *news_id: integer
+}
+
 Project ||--o{ Comment : "has"
 Project ||--o{ News : "has"
-Comment ||--o{ Rating : "receives"
-News ||--o{ Rating : "receives"
-User ||--o{ Rating : "gives"
+Project ||--o{ Campaign : "has"
+Project ||--o{ Category : "belongs to"
+News ||--o{ Score : "gives"
 @enduml

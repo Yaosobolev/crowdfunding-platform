@@ -3,70 +3,74 @@
 ' Включает сущности из User DB, Project DB, Payment DB и Chat DB
 Header Общая диаграмма сущность-связь (ERD) для краудфандинговой платформы
 entity User {
-  id: integer
+  *id: integer
   ..
-  email: string
-  password_hash: string
-  created_at: datetime
+  *name: string
+  *email: string
+  *role: string
+  *password: string
+  verified: datetime
+  avatar_url: string
+  *created_at: datetime
   updated_at: datetime
-  role: string
-  is_active: boolean
 }
 
 entity Project {
-  id: integer
+  *id: integer
   ..
-  title: string
-  description: text
-  goal_amount: decimal
-  current_amount: decimal
-  status: string
-  created_at: datetime
+  *title: string
+  *description: string
+  *goal_amount: integer
+  *current_amount: integer
+  *created_at: datetime
   updated_at: datetime
-  user_id: integer
+  *user_id: integer
+  *category_id: integer
 }
 
 entity Donation {
-  id: integer
+  *id: integer
   ..
-  amount: decimal
-  created_at: datetime
-  user_id: integer
-  project_id: integer
-}
-
-entity Chat {
-  id: integer
-  ..
-  name: string
-  created_at: datetime
+  *token: string
+  *amount: integer
+  *status: string
+  *created_at: datetime
   updated_at: datetime
+  *user_id: integer
+  *payment_id: integer
 }
 
 entity Message {
-  id: integer
+  *id: integer
   ..
-  content: text
-  created_at: datetime
-  user_id: integer
-  chat_id: integer
+  *sender_id: integer
+  *recipient_id: integer
+  *content: text
+  *created_at: datetime
+  updated_at: datetime
 }
 
 entity Notification {
-  id: integer
+  *id: integer
   ..
-  type: string
-  content: text
-  created_at: datetime
-  user_id: integer
+  *type: string
+  *sender_name: string
+  project_name: string
+  *status: string
+  sent_at: datetime
+  delivered_at: datetime
+  read_at: datetime
+  firebase_response: string
+  action_url: string
+
+  *created_at: datetime
+  *user_id: integer
 }
 
 ' Связи
 User ||--o{ Project : "creates"
 User ||--o{ Donation : "makes"
 Project ||--o{ Donation : "receives"
-User }--o{ Chat : "participates"
-Chat ||--o{ Message : "contains"
 User ||--o{ Message : "sends"
 User ||--o{ Notification : "receives"
 @enduml
